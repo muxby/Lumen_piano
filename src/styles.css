@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #11110f;
+  --color-surface: #1a1916;
+  --color-raised: #23221e;
+  --color-sunken: #0d0d0c;
+  --color-fg: #f0eee8;
+  --color-muted: #9a978c;
+  --color-faint: #6b6960;
+  --color-accent: #8ec9b8;
+  --color-accent-dim: #3f6b62;
+  --color-border: #2e2c28;
+  --color-key-white: #efece3;
+  --color-key-ink: #2c2a26;
+  --color-key-black: #141310;
+  --color-key-gap: rgb(18 16 12 / 0.18);
+
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+
+  --shadow-panel: 0 0 0 1px rgb(255 255 255 / 0.06);
+  --shadow-key-black: 0 5px 0 #0a0908;
+  --shadow-key-black-active: 0 1px 0 #0a0908;
+
+  --height-key-white: 9.25rem;
+  --height-key-black: 5.6rem;
+  --size-knob: 4.25rem;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--color-bg);
+    color: var(--color-fg);
+  }
+
+  body {
+    min-height: 100dvh;
+    overflow-x: hidden;
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  .piano-key {
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .piano-key-white {
+    position: relative;
+    z-index: 0;
+    display: flex;
+    min-width: 0;
+    flex: 1 1 0;
+    height: var(--height-key-white);
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.2rem;
+    border-right: 1px solid var(--color-key-gap);
+    background: var(--color-key-white);
+    color: var(--color-key-ink);
+    padding-bottom: 0.7rem;
+    transition:
+      background-color 80ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)),
+      color 80ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)),
+      transform 80ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1));
+  }
+
+  .piano-key-white:first-child {
+    border-top-left-radius: var(--radius-md);
+    border-bottom-left-radius: var(--radius-md);
+  }
+
+  .piano-key-white:last-child {
+    border-right: 0;
+    border-top-right-radius: var(--radius-md);
+    border-bottom-right-radius: var(--radius-md);
+  }
+
+  .piano-key-white[data-active="true"] {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    transform: translateY(1px);
+  }
+
+  .piano-key-black {
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    width: 4.2%;
+    height: var(--height-key-black);
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    border-bottom-left-radius: 0.3rem;
+    border-bottom-right-radius: 0.3rem;
+    background: var(--color-key-black);
+    color: var(--color-muted);
+    box-shadow: var(--shadow-key-black);
+    padding-bottom: 0.45rem;
+    transform: translateX(-50%);
+    transition:
+      background-color 80ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)),
+      color 80ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)),
+      box-shadow 80ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)),
+      transform 80ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1));
+  }
+
+  .piano-key-black[data-active="true"] {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    box-shadow: var(--shadow-key-black-active);
+    transform: translateX(-50%) translateY(3px);
+  }
+
+  .knob-dial {
+    background:
+      radial-gradient(circle at 50% 42%, var(--color-raised), var(--color-sunken) 72%);
+    box-shadow: var(--shadow-panel), inset 0 1px 0 rgb(255 255 255 / 0.06);
+  }
+}
+
+@media (min-width: 768px) {
+  .piano-key-white {
+    height: 11.25rem;
+  }
+
+  .piano-key-black {
+    height: 6.75rem;
+    width: 3.6%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .piano-key-white,
+  .piano-key-black {
+    transition: none;
+  }
+}
